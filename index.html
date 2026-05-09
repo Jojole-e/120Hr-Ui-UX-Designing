@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI/UX Roadmap — 120 Hours</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #17171e;
+    --surface2: #1e1e28;
+    --border: #2a2a38;
+    --text: #eeeef0;
+    --muted: #8888a0;
+    --accent1: #7ee8a2; /* teal-green */
+    --accent2: #f7c948; /* amber */
+    --accent3: #e06bff; /* purple */
+    --accent4: #ff7f5c; /* coral */
+    --accent5: #5cb8ff; /* blue */
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+  /* ── LAYOUT ── */
+  .shell { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 32px 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidebar-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo span {
+    display: inline-block;
+    width: 32px; height: 32px;
+    background: var(--accent1);
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-phase-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 18px 0 6px 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 14px;
+    color: var(--muted);
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--surface2); color: var(--text); font-weight: 500; }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN ── */
+  .main { flex: 1; padding: 48px 56px; max-width: 900px; }
+
+  /* ── HERO ── */
+  .hero {
+    margin-bottom: 56px;
+    padding: 48px;
+    background: var(--surface);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(126,232,162,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(126,232,162,0.15);
+    color: var(--accent1);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(126,232,162,0.25);
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .hero h1 em { font-style: normal; color: var(--accent1); }
+  .hero p {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.75;
+    margin-bottom: 28px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .hero-stat strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .hero-stat span { font-size: 13px; color: var(--muted); }
+
+  /* ── PHASE BADGE ── */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .phase-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px 6px 6px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .phase-badge-dot {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .phase-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 4px;
+    margin-bottom: 36px;
+    max-width: 600px;
+  }
+
+  /* ── SESSION CARD ── */
+  .session {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .session:hover { border-color: #3a3a50; }
+
+  .session-top {
+    padding: 28px 32px;
+    cursor: pointer;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .session-num-badge {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .session-top-text { flex: 1; }
+  .session-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .session-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .session-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .pill {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .hours-pill { color: var(--muted); border-color: var(--border); background: transparent; font-size: 13px; padding: 4px 12px; }
+  .toggle-arrow {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.25s;
+    color: var(--muted);
+    font-size: 16px;
+  }
+  .session.open .toggle-arrow { transform: rotate(180deg); }
+
+  .session-body {
+    display: none;
+    padding: 0 32px 32px;
+    border-top: 1px solid var(--border);
+  }
+  .session.open .session-body { display: block; }
+
+  /* ── CONTENT SECTIONS INSIDE SESSION ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 28px 0 14px;
+  }
+
+  /* ── QUICK READ BOX ── */
+  .quick-read {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 20px 24px;
+    border-left: 3px solid var(--accent1);
+  }
+  .quick-read p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #cccce0;
+  }
+  .quick-read p + p { margin-top: 10px; }
+  .quick-read strong { color: var(--text); font-weight: 500; }
+
+  /* ── LEARN LIST ── */
+  .learn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .learn-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 14px;
+    color: #cccce0;
+    line-height: 1.5;
+  }
+  .learn-item::before {
+    content: '✓';
+    color: var(--accent1);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── VIDEO CARDS ── */
+  .video-grid { display: flex; flex-direction: column; gap: 12px; }
+  .video-card {
+    display: flex;
+    gap: 16px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: border-color 0.15s, background 0.15s;
+    align-items: flex-start;
+  }
+  .video-card:hover { border-color: #e00; background: rgba(255,60,60,0.05); }
+  .video-thumb {
+    width: 52px; height: 38px;
+    background: #c00;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .video-thumb::after {
+    content: '▶';
+    color: white;
+    font-size: 14px;
+  }
+  .video-info { flex: 1; }
+  .video-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+  .video-channel { font-size: 12px; color: var(--muted); }
+  .video-duration {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  /* ── PROJECT BOX ── */
+  .project-box {
+    background: linear-gradient(135deg, rgba(247,201,72,0.07), rgba(247,201,72,0.03));
+    border: 1px solid rgba(247,201,72,0.25);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+  }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .project-title::before { content: '🎯'; font-size: 18px; }
+  .project-steps { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .project-steps li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    color: #cccce0;
+    line-height: 1.6;
+  }
+  .step-num {
+    width: 22px; height: 22px;
+    background: rgba(247,201,72,0.15);
+    color: var(--accent2);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .deliverable-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(247,201,72,0.12);
+    color: var(--accent2);
+    border: 1px solid rgba(247,201,72,0.3);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    margin-top: 16px;
+  }
+  .deliverable-tag::before { content: '📦'; font-size: 13px; }
+
+  /* ── REVIEW BOX ── */
+  .review-box {
+    background: rgba(224,107,255,0.06);
+    border: 1px solid rgba(224,107,255,0.2);
+    border-radius: var(--radius-sm);
+    padding: 20px 24px;
+  }
+  .review-box h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent3);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .review-box h4::before { content: '⏱'; }
+  .review-questions { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .review-questions li {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    color: #cccce0;
+    line-height: 1.6;
+  }
+  .review-questions li::before { content: '→'; color: var(--accent3); flex-shrink: 0; margin-top: 2px; }
+
+  /* ── READING LINKS ── */
+  .reading-list { display: flex; flex-direction: column; gap: 10px; }
+  .reading-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .reading-item:hover { border-color: var(--accent5); }
+  .reading-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(92,184,255,0.15);
+    color: var(--accent5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .reading-info .reading-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; line-height: 1.4; }
+  .reading-info .reading-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── PROGRESS TRACKER ── */
+  .progress-strip {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .prog-seg {
+    height: 5px;
+    border-radius: 99px;
+    flex: 1;
+    min-width: 20px;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .prog-seg.done { background: var(--accent1); }
+  .prog-seg.active { background: var(--accent2); }
+
+  /* ── PAGE VISIBILITY ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 820px) {
+    .sidebar { display: none; }
+    .main { padding: 28px 20px; }
+    .hero h1 { font-size: 28px; }
+    .learn-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── FOCUS MODE TOGGLE ── */
+  .focus-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .focus-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 99px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .focus-btn:hover { color: var(--text); border-color: var(--accent1); }
+  .focus-btn.on { background: rgba(126,232,162,0.12); color: var(--accent1); border-color: var(--accent1); }
+  .focus-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+  body.focus-mode .quick-read { font-size: 16px; line-height: 2; }
+  body.focus-mode .session-body { background: #12121a; }
+  body.focus-mode .video-card, body.focus-mode .reading-item, body.focus-mode .learn-item { background: #12121a; }
+  body.focus-mode { font-size: 18px; }
+
+  /* ── MOBILE NAV (for small screens) ── */
+  .mobile-phase-nav {
+    display: none;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .mobile-phase-btn {
+    padding: 8px 16px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .mobile-phase-btn.active { background: var(--surface2); color: var(--text); border-color: #3a3a50; }
+  @media (max-width: 820px) { .mobile-phase-nav { display: flex; } }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span></span>UI/UX Roadmap
+    </div>
+
+    <div class="sidebar-phase-label">Phase 1 — Foundations</div>
+    <button class="nav-item active" onclick="goTo('s1')"><span class="nav-dot" style="background:#7ee8a2"></span>What is UI/UX?</button>
+    <button class="nav-item" onclick="goTo('s2')"><span class="nav-dot" style="background:#7ee8a2"></span>Visual Principles</button>
+    <button class="nav-item" onclick="goTo('s3')"><span class="nav-dot" style="background:#7ee8a2"></span>Typography & Color</button>
+    <button class="nav-item" onclick="goTo('s4')"><span class="nav-dot" style="background:#7ee8a2"></span>Figma Basics</button>
+    <button class="nav-item" onclick="goTo('s5')"><span class="nav-dot" style="background:#7ee8a2"></span>Design Systems</button>
+    <button class="nav-item" onclick="goTo('s6')"><span class="nav-dot" style="background:#f7c948"></span>🎯 Project 1</button>
+
+    <div class="sidebar-phase-label">Phase 2 — Core UI</div>
+    <button class="nav-item" onclick="goTo('s7')"><span class="nav-dot" style="background:#5cb8ff"></span>Grids & Spacing</button>
+    <button class="nav-item" onclick="goTo('s8')"><span class="nav-dot" style="background:#5cb8ff"></span>Mobile Patterns</button>
+    <button class="nav-item" onclick="goTo('s9')"><span class="nav-dot" style="background:#5cb8ff"></span>Prototyping</button>
+    <button class="nav-item" onclick="goTo('s10')"><span class="nav-dot" style="background:#5cb8ff"></span>Web UI</button>
+    <button class="nav-item" onclick="goTo('s11')"><span class="nav-dot" style="background:#5cb8ff"></span>Accessibility</button>
+    <button class="nav-item" onclick="goTo('s12')"><span class="nav-dot" style="background:#f7c948"></span>🎯 Project 2</button>
+
+    <div class="sidebar-phase-label">Phase 3 — UX Research</div>
+    <button class="nav-item" onclick="goTo('s13')"><span class="nav-dot" style="background:#e06bff"></span>User Research</button>
+    <button class="nav-item" onclick="goTo('s14')"><span class="nav-dot" style="background:#e06bff"></span>Personas & Journeys</button>
+    <button class="nav-item" onclick="goTo('s15')"><span class="nav-dot" style="background:#e06bff"></span>User Flows</button>
+    <button class="nav-item" onclick="goTo('s16')"><span class="nav-dot" style="background:#e06bff"></span>Wireframing</button>
+    <button class="nav-item" onclick="goTo('s17')"><span class="nav-dot" style="background:#e06bff"></span>Usability Testing</button>
+    <button class="nav-item" onclick="goTo('s18')"><span class="nav-dot" style="background:#f7c948"></span>🎯 Project 3</button>
+
+    <div class="sidebar-phase-label">Phase 4 — Portfolio</div>
+    <button class="nav-item" onclick="goTo('s19')"><span class="nav-dot" style="background:#ff7f5c"></span>Case Studies</button>
+    <button class="nav-item" onclick="goTo('s20')"><span class="nav-dot" style="background:#ff7f5c"></span>Full App Design</button>
+    <button class="nav-item" onclick="goTo('s21')"><span class="nav-dot" style="background:#ff7f5c"></span>Portfolio Site</button>
+    <button class="nav-item" onclick="goTo('s22')"><span class="nav-dot" style="background:#ff7f5c"></span>Figma Advanced</button>
+    <button class="nav-item" onclick="goTo('s23')"><span class="nav-dot" style="background:#f7c948"></span>🎯 Final Project</button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HERO (always visible) -->
+    <div class="hero">
+      <div class="hero-tag">Beginner Friendly · ADHD-Optimised</div>
+      <h1>Your <em>120-Hour</em> UI/UX Design Roadmap</h1>
+      <p>Learn the 20% of design skills that drive 80% of results. Short chunks. Clear goals. Real projects. One session at a time.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>120</strong><span>Total hours</span></div>
+        <div class="hero-stat"><strong>23</strong><span>Sessions</span></div>
+        <div class="hero-stat"><strong>8</strong><span>Projects</span></div>
+        <div class="hero-stat"><strong>4</strong><span>Phases</span></div>
+      </div>
+    </div>
+
+    <!-- MOBILE PHASE NAV -->
+    <div class="mobile-phase-nav">
+      <button class="mobile-phase-btn active" onclick="goTo('s1')">Phase 1</button>
+      <button class="mobile-phase-btn" onclick="goTo('s7')">Phase 2</button>
+      <button class="mobile-phase-btn" onclick="goTo('s13')">Phase 3</button>
+      <button class="mobile-phase-btn" onclick="goTo('s19')">Phase 4</button>
+    </div>
+
+    <!-- FOCUS + PROGRESS -->
+    <div class="focus-bar">
+      <div class="progress-strip" id="progressStrip"></div>
+      <button class="focus-btn" id="focusBtn" onclick="toggleFocus()">
+        <span class="focus-dot"></span> Focus Mode
+      </button>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PHASE 1 -->
+    <!-- ═══════════════════════════════════════════ -->
+
+    <div class="phase-header" id="phase1-header">
+      <div>
+        <div class="phase-badge" style="background:rgba(126,232,162,0.1);color:var(--accent1);border-color:rgba(126,232,162,0.3)">
+          <div class="phase-badge-dot" style="background:rgba(126,232,162,0.2);color:var(--accent1)">1</div>
+          Phase 1 · Sessions 1–6 · 30 hrs
+        </div>
+      </div>
+    </div>
+    <h2 class="phase-title">Design Foundations</h2>
+    <p class="phase-sub">You'll learn how design works, master the basics of visual thinking, and get comfortable in Figma — the tool you'll use every single day.</p>
+
+    <!-- SESSION 1 -->
+    <div class="session" id="s1">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(126,232,162,0.15);color:var(--accent1)">01</div>
+        <div class="session-top-text">
+          <div class="session-title">What is UI/UX? How the industry works</div>
+          <div class="session-desc">Roles, deliverables, tools, and how to think like a designer from day one</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+
+        <div class="section-label">📖 Mini Read — what you need to know</div>
+        <div class="quick-read">
+          <p><strong>UI (User Interface)</strong> is what a product looks like — buttons, colors, typography, layout. Think of it as the visual layer.</p>
+          <p><strong>UX (User Experience)</strong> is how a product feels to use — is it easy? Does it make sense? Does it solve the user's problem? Think of it as the logic layer.</p>
+          <p>A <strong>UI designer</strong> makes it look good. A <strong>UX designer</strong> makes it work well. Most jobs need both skills. Your goal: learn both.</p>
+          <p>The design process follows the <strong>Double Diamond</strong>: Discover → Define → Develop → Deliver. You'll use this pattern for every project in this roadmap.</p>
+        </div>
+
+        <div class="section-label">✅ What you'll learn this session</div>
+        <div class="learn-grid">
+          <div class="learn-item">The difference between UI and UX</div>
+          <div class="learn-item">What a UI designer does day-to-day</div>
+          <div class="learn-item">What a UX designer does day-to-day</div>
+          <div class="learn-item">The Double Diamond design process</div>
+          <div class="learn-item">Common deliverables: wireframes, mockups, prototypes</div>
+          <div class="learn-item">Tools used by real design teams</div>
+        </div>
+
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=5CxXhyhT6Fc" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">What is UI vs UX Design?</div>
+              <div class="video-channel">AJ&Smart</div>
+            </div>
+            <div class="video-duration">16 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=SRec90j6lTY" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">So You Want to be a UX Designer</div>
+              <div class="video-channel">CareerFoundry</div>
+            </div>
+            <div class="video-duration">12 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=_lyzy-vChh4" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">UX Design Process Explained (Double Diamond)</div>
+              <div class="video-channel">NNGroup</div>
+            </div>
+            <div class="video-duration">10 min</div>
+          </a>
+        </div>
+
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.interaction-design.org/literature/topics/ui-design" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">What is UI Design? — Interaction Design Foundation</div>
+              <div class="reading-desc">Free article. Beginner-friendly overview of UI design. Read all sections.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://www.nngroup.com/articles/definition-user-experience/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">UX Definition — Nielsen Norman Group</div>
+              <div class="reading-desc">The most respected UX research firm in the world. Bookmark nngroup.com — you'll return often.</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>In your own words — what is the difference between UI and UX?</li>
+            <li>Name 3 things a UX designer makes (wireframes, journey maps…)</li>
+            <li>Name 3 things a UI designer makes (mockups, style guides…)</li>
+            <li>What are the 4 stages of the Double Diamond?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 2 -->
+    <div class="session" id="s2">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(126,232,162,0.15);color:var(--accent1)">02</div>
+        <div class="session-top-text">
+          <div class="session-title">Visual Design Principles</div>
+          <div class="session-desc">Contrast, alignment, proximity, hierarchy — the rules every good design follows</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>There are 6 principles that govern almost every design decision you'll ever make. They aren't rules you memorise — they're things your eye already knows, but your brain hasn't named yet.</p>
+          <p><strong>Contrast</strong> makes things stand out. <strong>Alignment</strong> creates order. <strong>Proximity</strong> groups related items. <strong>Repetition</strong> creates consistency. <strong>Hierarchy</strong> tells the eye where to look first. <strong>White space</strong> gives elements room to breathe.</p>
+          <p>Open any app right now. Every design decision you see is one of these 6 principles at work.</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">The 6 core visual design principles</div>
+          <div class="learn-item">How visual hierarchy guides the eye</div>
+          <div class="learn-item">Why white space is not "wasted space"</div>
+          <div class="learn-item">How to critique any design you see</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=yNDgFK2Jj1E" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Beginning Graphic Design: Fundamentals</div>
+              <div class="video-channel">GCFGlobal</div>
+            </div>
+            <div class="video-duration">6 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=a5KYlHNKQB8" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Design Principles: Visual Hierarchy</div>
+              <div class="video-channel">Designlab</div>
+            </div>
+            <div class="video-duration">8 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.canva.com/learn/design-elements-principles/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Design Elements & Principles — Canva Learn</div>
+              <div class="reading-desc">Great visual examples of each principle. Study the screenshots carefully.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Open any app and name one example of contrast, alignment, and proximity.</li>
+            <li>Which element has the strongest visual hierarchy on that screen? Why does your eye go there first?</li>
+            <li>What one thing would you change to improve it?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 3 -->
+    <div class="session" id="s3">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(126,232,162,0.15);color:var(--accent1)">03</div>
+        <div class="session-top-text">
+          <div class="session-title">Typography & Color Theory</div>
+          <div class="session-desc">Type scales, font pairing, color systems, and accessibility contrast</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p><strong>Typography</strong> is one of the most powerful tools in design. 90% of UI is text. Bad typography makes even beautiful layouts feel off. The key things to control: font choice, size scale, line height, and weight contrast.</p>
+          <p><strong>Color</strong> works through relationships, not individual colors. The most reliable system: pick one <strong>primary color</strong>, one <strong>accent color</strong>, and build everything else in neutrals (whites, grays, blacks).</p>
+          <p>Always check <strong>contrast ratios</strong>. The WCAG AA standard requires a 4.5:1 ratio for body text. If someone with low vision can't read your text, your design fails.</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">How to build a type scale (h1 → body → caption)</div>
+          <div class="learn-item">Rules for pairing fonts effectively</div>
+          <div class="learn-item">The 60-30-10 color rule</div>
+          <div class="learn-item">What WCAG contrast ratios mean</div>
+          <div class="learn-item">How to build a 5-color UI palette</div>
+          <div class="learn-item">Primary, accent, and neutral color roles</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=QrNi9FmdlxY" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Typography for Developers & Designers</div>
+              <div class="video-channel">Traversy Media</div>
+            </div>
+            <div class="video-duration">21 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=AvgCkHrcj8w" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Color Theory for Designers</div>
+              <div class="video-channel">Flux Academy</div>
+            </div>
+            <div class="video-duration">18 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://typescale.com/" target="_blank">
+            <div class="reading-icon">🔧</div>
+            <div class="reading-info">
+              <div class="reading-title">Type Scale Tool — typescale.com</div>
+              <div class="reading-desc">Interactive. Generate a type scale and see how heading, body, and caption sizes relate.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://coolors.co/generate" target="_blank">
+            <div class="reading-icon">🎨</div>
+            <div class="reading-info">
+              <div class="reading-title">Coolors — Palette Generator</div>
+              <div class="reading-desc">Practice making 5-color palettes. Aim: one primary, one accent, three neutrals.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://webaim.org/resources/contrastchecker/" target="_blank">
+            <div class="reading-icon">✅</div>
+            <div class="reading-info">
+              <div class="reading-title">Contrast Checker — WebAIM</div>
+              <div class="reading-desc">Check every text color in your designs. Aim for WCAG AA minimum at all times.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>What is the minimum contrast ratio for readable body text?</li>
+            <li>Name 2 rules for pairing fonts (hint: weight contrast, serif + sans).</li>
+            <li>Create a 5-color palette in Coolors for a health-tech app. Save it.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 4 -->
+    <div class="session" id="s4">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(126,232,162,0.15);color:var(--accent1)">04</div>
+        <div class="session-top-text">
+          <div class="session-title">Figma Fundamentals</div>
+          <div class="session-desc">Frames, components, auto layout, styles — your primary design tool</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p><strong>Figma</strong> is free and browser-based — no install needed. It's the tool used by 80%+ of professional design teams worldwide.</p>
+          <p>The most important things to learn first: <strong>Frames</strong> (like artboards — your canvas), <strong>Components</strong> (reusable design elements like buttons), and <strong>Auto Layout</strong> (makes your designs resize intelligently, just like CSS flexbox).</p>
+          <p>Don't try to learn every feature. Focus on these three and you'll be able to build real interfaces.</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">Navigate the Figma interface</div>
+          <div class="learn-item">Create frames, shapes, and text</div>
+          <div class="learn-item">Use auto layout like a pro</div>
+          <div class="learn-item">Build and reuse components</div>
+          <div class="learn-item">Apply color and text styles</div>
+          <div class="learn-item">Export and share your work</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=FTFaQWZBqQ8" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Figma Tutorial for Beginners — Full Course</div>
+              <div class="video-channel">freeCodeCamp</div>
+            </div>
+            <div class="video-duration">2 hrs — follow along!</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=Cx2dkpBxst8" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Auto Layout in Figma — Official Tutorial</div>
+              <div class="video-channel">Figma</div>
+            </div>
+            <div class="video-duration">15 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://help.figma.com/hc/en-us/categories/360002042553-Using-Figma" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Figma Official Help Docs</div>
+              <div class="reading-desc">Bookmark this. Whenever you get stuck, search here before YouTube.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>What's the difference between a frame and a group in Figma?</li>
+            <li>How does auto layout save time when content changes size?</li>
+            <li>Create one button component with hover and default states.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 5 -->
+    <div class="session" id="s5">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(126,232,162,0.15);color:var(--accent1)">05</div>
+        <div class="session-top-text">
+          <div class="session-title">Design Systems & UI Components</div>
+          <div class="session-desc">Buttons, inputs, cards, modals — how professional design libraries are built</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>A <strong>design system</strong> is a collection of reusable components with rules for how to use them. Think of it like a LEGO set — each piece is designed to work with every other piece.</p>
+          <p>Companies like Google (Material Design) and Apple (Human Interface Guidelines) publish their design systems publicly. You can study them to understand how world-class teams structure their components.</p>
+          <p>The 8 components every designer must know by heart: <strong>Button, Input field, Dropdown, Card, Modal, Navigation bar, Toast notification, Badge.</strong></p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">What a design system is and why it exists</div>
+          <div class="learn-item">How to build a component library in Figma</div>
+          <div class="learn-item">Using variants for different button states</div>
+          <div class="learn-item">How Google's Material Design works</div>
+          <div class="learn-item">How Apple's HIG differs from Material</div>
+          <div class="learn-item">Tokens: color, spacing, radius, shadow</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=EK-pHkc5EL4" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Design Systems Explained</div>
+              <div class="video-channel">DesignCourse</div>
+            </div>
+            <div class="video-duration">14 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=Dtd40cHQQlk" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Build a UI Component Library in Figma</div>
+              <div class="video-channel">Bring Your Own Laptop</div>
+            </div>
+            <div class="video-duration">1 hr</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://m3.material.io/components" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Material Design 3 Components — Google</div>
+              <div class="reading-desc">Study how Google documents each component: anatomy, behavior, specs. This is the gold standard.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Apple Human Interface Guidelines</div>
+              <div class="reading-desc">How Apple defines UI components and interaction. Compare with Material Design — notice the differences.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>What are "variants" in Figma and why are they useful?</li>
+            <li>List 8 UI components every designer must know by heart.</li>
+            <li>What is a "design token" and how does it help teams stay consistent?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 6 — PROJECT -->
+    <div class="session" id="s6">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(247,201,72,0.15);color:var(--accent2)">P1</div>
+        <div class="session-top-text">
+          <div class="session-title">🎯 Project 1 — Design Your First App</div>
+          <div class="session-desc">Apply everything from Phase 1: a to-do app designed from scratch</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Before you start</div>
+        <div class="quick-read">
+          <p>This project proves you can apply principles, not just understand them. You'll design a to-do app — but do it <strong>your way</strong>, with your own colors and typography. Don't copy another app. Make design decisions and own them.</p>
+        </div>
+        <div class="section-label">🎯 Project brief</div>
+        <div class="project-box">
+          <div class="project-title">To-Do App — 3 screens in Figma</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Set up a color palette (primary + accent + neutrals) and a type scale in Figma.</li>
+            <li><span class="step-num">2</span>Design the <strong>Home screen</strong> — task list with at least 3 task cards, a header, and an "Add task" button.</li>
+            <li><span class="step-num">3</span>Design the <strong>Add Task screen</strong> — input field, date picker, priority selector, and a save button.</li>
+            <li><span class="step-num">4</span>Design an <strong>Empty State screen</strong> — what shows when there are no tasks? Make it friendly, not blank.</li>
+            <li><span class="step-num">5</span>Build at least 3 reusable components: task card, button, input field.</li>
+            <li><span class="step-num">6</span>Review: does a stranger understand the app in 5 seconds? Fix anything confusing.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Figma file with 3 screens + component library</div>
+        </div>
+        <div class="section-label">🎬 Watch this first</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=195RY7jCuZg" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Design a Mobile App from Scratch — Watch a pro think out loud</div>
+              <div class="video-channel">Mizko</div>
+            </div>
+            <div class="video-duration">45 min</div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>Self-critique your project:</h4>
+          <ul class="review-questions">
+            <li>Does your design apply contrast, hierarchy, and alignment?</li>
+            <li>Would someone who's never seen your app understand it in 5 seconds?</li>
+            <li>Write down 3 things you'd improve with more time.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 HEADER -->
+    <div class="phase-header" id="phase2-header" style="margin-top:48px">
+      <div>
+        <div class="phase-badge" style="background:rgba(92,184,255,0.1);color:var(--accent5);border-color:rgba(92,184,255,0.3)">
+          <div class="phase-badge-dot" style="background:rgba(92,184,255,0.2);color:var(--accent5)">2</div>
+          Phase 2 · Sessions 7–12 · 30 hrs
+        </div>
+      </div>
+    </div>
+    <h2 class="phase-title">Core UI Design</h2>
+    <p class="phase-sub">Grids, spacing, mobile patterns, prototyping, web layouts, and accessibility. You'll be designing real-world interfaces that look and work like the apps you use every day.</p>
+
+    <!-- SESSION 7 -->
+    <div class="session" id="s7">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(92,184,255,0.15);color:var(--accent5)">07</div>
+        <div class="session-top-text">
+          <div class="session-title">Grids, Spacing & Layout Systems</div>
+          <div class="session-desc">The 8pt grid, column grids, and responsive breakpoints</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>The <strong>8pt grid</strong> means every spacing value in your design is a multiple of 8 (8, 16, 24, 32, 48…). This creates visual harmony without you having to think about it. Almost every major tech company uses this: Google, Apple, Airbnb, Spotify.</p>
+          <p><strong>Column grids</strong> divide your canvas into columns (usually 4 on mobile, 12 on desktop) with gutters between them. Content lives in the columns; breathing room lives in the gutters.</p>
+          <p>Consistent spacing is what separates designs that "feel right" from designs that feel off — even when the viewer can't say why.</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">The 8pt spacing system</div>
+          <div class="learn-item">Setting up column grids in Figma</div>
+          <div class="learn-item">Common mobile breakpoints (375, 390, 428px)</div>
+          <div class="learn-item">What "spacing tokens" are</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=_w-iYiEXrl0" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">The 8pt Grid System</div>
+              <div class="video-channel">Malewicz (HYPE4)</div>
+            </div>
+            <div class="video-duration">12 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=n3MDG4Ac9uQ" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Responsive Design Principles for UI</div>
+              <div class="video-channel">DesignCourse</div>
+            </div>
+            <div class="video-duration">16 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://spec.fm/specifics/8-pt-grid" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">The 8-Point Grid — Spec.fm</div>
+              <div class="reading-desc">The definitive article on 8pt grids. Read fully, then apply the system to your Figma files immediately.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Set up an 8pt grid in a new Figma frame. Snap all your elements to it.</li>
+            <li>What are the 3 common mobile screen widths? (375, 390, 428px)</li>
+            <li>Why does consistent spacing matter more than any individual spacing value?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 8 -->
+    <div class="session" id="s8">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(92,184,255,0.15);color:var(--accent5)">08</div>
+        <div class="session-top-text">
+          <div class="session-title">Mobile App UI Patterns</div>
+          <div class="session-desc">Navigation bars, tab bars, lists, cards, sheets, and modals</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>A <strong>UI pattern</strong> is a reusable solution to a common design problem. When users see a tab bar at the bottom of a screen, they already know it switches between sections — because every app uses it the same way. Don't reinvent patterns that already work.</p>
+          <p>The most important patterns to master: <strong>Tab bar navigation</strong> (bottom, 3–5 tabs), <strong>Cards</strong> (contain related info), <strong>Bottom sheets</strong> (slide up from bottom for actions), <strong>Modals</strong> (overlay for important decisions), and <strong>Empty states</strong> (what shows when there's no content yet).</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">12 essential mobile UI patterns</div>
+          <div class="learn-item">When to use a tab bar vs hamburger menu</div>
+          <div class="learn-item">Bottom sheet vs modal — the difference</div>
+          <div class="learn-item">How to design effective empty states</div>
+          <div class="learn-item">Progressive disclosure in UI</div>
+          <div class="learn-item">How to study real apps for inspiration</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=t0aCoqXKFOU" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Mobile App UI Design Patterns Explained</div>
+              <div class="video-channel">DesignSense</div>
+            </div>
+            <div class="video-duration">20 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://ui-patterns.com/patterns" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">UI Design Patterns Library — ui-patterns.com</div>
+              <div class="reading-desc">60+ patterns. Start with "navigation", "getting input", and "social" sections.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://mobbin.com" target="_blank">
+            <div class="reading-icon">📱</div>
+            <div class="reading-info">
+              <div class="reading-title">Mobbin — Real App Screenshots</div>
+              <div class="reading-desc">Thousands of real app screens for inspiration and pattern study. Free account available.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>What is the difference between a bottom sheet and a modal?</li>
+            <li>When should you use tab bar vs hamburger menu? (Hint: tab bar for 3–5 primary destinations)</li>
+            <li>Find an example of "progressive disclosure" in an app you use right now.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 9 -->
+    <div class="session" id="s9">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(92,184,255,0.15);color:var(--accent5)">09</div>
+        <div class="session-top-text">
+          <div class="session-title">Prototyping & Micro-interactions</div>
+          <div class="session-desc">Clickable prototypes, transitions, smart animate, and hover states</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>A <strong>prototype</strong> is a clickable version of your design — not real code, but it feels real enough to test with users. The goal is to simulate the experience without building it.</p>
+          <p><strong>Micro-interactions</strong> are the tiny animations that make an interface feel alive — a button that squishes when pressed, a toggle that slides smoothly, a screen that slides in from the right. They communicate state changes and make digital interfaces feel physical.</p>
+          <p>In Figma, use <strong>Smart Animate</strong> between frames that share matching layer names. Figma interpolates between states automatically — it's powerful.</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">Connect screens with prototype links</div>
+          <div class="learn-item">Choose the right transitions</div>
+          <div class="learn-item">Create Smart Animate effects</div>
+          <div class="learn-item">Build interactive components</div>
+          <div class="learn-item">Share prototype links</div>
+          <div class="learn-item">Test your prototype on a real phone</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=H_jGBmzSKGQ" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Figma Prototyping Full Guide</div>
+              <div class="video-channel">Figma Official</div>
+            </div>
+            <div class="video-duration">35 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=EZinECFEkMs" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Smart Animate Micro-interactions in Figma</div>
+              <div class="video-channel">UI Collective</div>
+            </div>
+            <div class="video-duration">18 min</div>
+          </a>
+        </div>
+        <div class="section-label">🎯 Mini project inside this session</div>
+        <div class="project-box">
+          <div class="project-title">Food Delivery App Prototype (5 screens)</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Design 5 screens: <strong>Home → Restaurant → Menu Item → Cart → Order Confirmed</strong></li>
+            <li><span class="step-num">2</span>Connect all screens with prototype links and appropriate transitions.</li>
+            <li><span class="step-num">3</span>Add at least 1 micro-interaction: button press state, loading spinner, or bottom sheet animation.</li>
+            <li><span class="step-num">4</span>Share the prototype link. Test it on your phone using the Figma Mirror app.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Shareable Figma prototype link</div>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Play your prototype. Where does it feel slow, wrong, or unnatural?</li>
+            <li>What makes a good transition? (Match natural direction — slide left to go deeper, slide right to go back.)</li>
+            <li>What are "interactive components" in Figma and when would you use them?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 10 -->
+    <div class="session" id="s10">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(92,184,255,0.15);color:var(--accent5)">10</div>
+        <div class="session-top-text">
+          <div class="session-title">Web UI — Landing Pages & Dashboards</div>
+          <div class="session-desc">Hero sections, navigation, cards, tables, data visualization layouts</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>Web UI follows different rules than mobile. More screen real estate means more options — and more chances to confuse users. The best web designs resist that temptation and stay focused.</p>
+          <p>A great <strong>landing page</strong> answers three questions above the fold: <em>What is this? Who is it for? What should I do next?</em> The hero section — the first thing you see — must answer all three in under 5 seconds.</p>
+          <p><strong>Dashboards</strong> are about information density and hierarchy. Users scan, not read. Use cards, big numbers, and clear labels. Every piece of data needs a label — never make users guess what a number means.</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">Anatomy of a landing page (hero, features, CTA)</div>
+          <div class="learn-item">How to design a sticky navigation bar</div>
+          <div class="learn-item">Dashboard layout principles</div>
+          <div class="learn-item">Fitts's Law and button sizing</div>
+          <div class="learn-item">Table vs card grid — when to use each</div>
+          <div class="learn-item">Laws of UX applied to real pages</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=32zYJWBCYs8" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Design a Landing Page in Figma</div>
+              <div class="video-channel">DesignCourse</div>
+            </div>
+            <div class="video-duration">1.5 hrs</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=6YB_aOvObgg" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Dashboard UI Design from Scratch</div>
+              <div class="video-channel">Mizko</div>
+            </div>
+            <div class="video-duration">40 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://lawsofux.com" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Laws of UX — lawsofux.com</div>
+              <div class="reading-desc">21 psychology principles that apply to UI. Study Fitts's Law, Hick's Law, and Jakob's Law first.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>What 3 questions must a hero section answer in under 5 seconds?</li>
+            <li>How does Fitts's Law affect the size and placement of your CTA button?</li>
+            <li>When should you show data in a table vs a card grid?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 11 -->
+    <div class="session" id="s11">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(92,184,255,0.15);color:var(--accent5)">11</div>
+        <div class="session-top-text">
+          <div class="session-title">Accessibility & Inclusive Design</div>
+          <div class="session-desc">Contrast, touch targets, readable text, and designing for everyone</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p><strong>Accessibility</strong> means designing so that people with disabilities can use your product. 1 in 4 adults in the world has some form of disability — visual, motor, cognitive, or auditory. Inaccessible design excludes them.</p>
+          <p>The good news: accessible design is almost always better design for everyone. High contrast, larger touch targets, and clear labels improve the experience for every single user, not just those with disabilities.</p>
+          <p>The three most important things you can control as a beginner: <strong>Color contrast</strong> (4.5:1 minimum for text), <strong>Touch target size</strong> (minimum 44x44pt on iOS / 48x48dp on Android), and <strong>Focus states</strong> (visible keyboard navigation for everyone who doesn't use a mouse).</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">WCAG AA contrast requirements</div>
+          <div class="learn-item">Minimum touch target sizes</div>
+          <div class="learn-item">What focus states are and why they matter</div>
+          <div class="learn-item">How screen readers interpret UI</div>
+          <div class="learn-item">Alt text for images</div>
+          <div class="learn-item">How to audit your designs for accessibility</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=3f31oufqFSM" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Accessibility for UI Designers</div>
+              <div class="video-channel">Google Design</div>
+            </div>
+            <div class="video-duration">22 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://webaim.org/resources/contrastchecker/" target="_blank">
+            <div class="reading-icon">✅</div>
+            <div class="reading-info">
+              <div class="reading-title">Contrast Checker — WebAIM</div>
+              <div class="reading-desc">Run every text color in your designs through this. Fix anything that fails.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://www.w3.org/WAI/fundamentals/accessibility-intro/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Introduction to Accessibility — W3C WAI</div>
+              <div class="reading-desc">The official source. Read "How People with Disabilities Use the Web" section specifically.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Run your to-do app (Project 1) through the contrast checker. Fix any failures.</li>
+            <li>What is the minimum touch target size for mobile? (44x44pt on iOS)</li>
+            <li>What are focus states and why do keyboard users depend on them?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 12 — PROJECT -->
+    <div class="session" id="s12">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(247,201,72,0.15);color:var(--accent2)">P2</div>
+        <div class="session-top-text">
+          <div class="session-title">🎯 Project 2 — Design a Full SaaS Landing Page</div>
+          <div class="session-desc">Hero, features, social proof, pricing, footer — full 1440px desktop layout</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Before you start</div>
+        <div class="quick-read">
+          <p>This project tests your ability to design a complete web page from top to bottom, applying your grid, spacing system, and component knowledge. Invent a fictional productivity SaaS product and design its homepage.</p>
+        </div>
+        <div class="section-label">🎯 Project brief</div>
+        <div class="project-box">
+          <div class="project-title">SaaS Landing Page — 1440px desktop</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Set up a 12-column grid at 1440px with 24px gutters.</li>
+            <li><span class="step-num">2</span>Design a <strong>navigation bar</strong> with logo, links, and a CTA button.</li>
+            <li><span class="step-num">3</span>Design a <strong>hero section</strong> — headline, subheadline, CTA, and a mockup/image.</li>
+            <li><span class="step-num">4</span>Design a <strong>3-feature section</strong> — icon, heading, and 2-line description per feature.</li>
+            <li><span class="step-num">5</span>Add a <strong>testimonials section</strong> — at least 2 quotes with name and photo placeholder.</li>
+            <li><span class="step-num">6</span>Design a <strong>3-tier pricing table</strong> — Free, Pro, Enterprise. Highlight the recommended plan.</li>
+            <li><span class="step-num">7</span>Add a <strong>footer</strong> — links, social icons, copyright line.</li>
+            <li><span class="step-num">8</span>Check all text passes WCAG AA contrast. Fix anything that fails.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Full Figma file + shareable prototype link</div>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>Self-critique your project:</h4>
+          <ul class="review-questions">
+            <li>Does the page have one clear, unmissable primary CTA?</li>
+            <li>Does a first-time visitor understand what the product does in under 5 seconds?</li>
+            <li>Is the visual hierarchy clear from top to bottom — does the eye flow naturally?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 HEADER -->
+    <div class="phase-header" id="phase3-header" style="margin-top:48px">
+      <div>
+        <div class="phase-badge" style="background:rgba(224,107,255,0.1);color:var(--accent3);border-color:rgba(224,107,255,0.3)">
+          <div class="phase-badge-dot" style="background:rgba(224,107,255,0.2);color:var(--accent3)">3</div>
+          Phase 3 · Sessions 13–18 · 30 hrs
+        </div>
+      </div>
+    </div>
+    <h2 class="phase-title">UX Research & Process</h2>
+    <p class="phase-sub">This is the X in UX. You'll learn how to understand users, map their journeys, wireframe solutions, and test your designs with real people.</p>
+
+    <!-- SESSION 13 -->
+    <div class="session" id="s13">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(224,107,255,0.15);color:var(--accent3)">13</div>
+        <div class="session-top-text">
+          <div class="session-title">User Research Fundamentals</div>
+          <div class="session-desc">Interviews, surveys, personas, empathy maps, and research synthesis</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>Most bad products weren't built by bad designers — they were built by designers who never talked to users. <strong>User research</strong> is the practice of finding out what real people actually need, not what you assume they need.</p>
+          <p>There are two types of research: <strong>Generative</strong> (discovering what problems exist — you do this before designing) and <strong>Evaluative</strong> (testing whether your design solves those problems — you do this after designing).</p>
+          <p>The most powerful method for beginners: a <strong>5-person user interview</strong>. Research shows that 5 interviews reveal 85% of major usability problems. You don't need 50 people — you need 5 honest conversations.</p>
+        </div>
+        <div class="section-label">✅ What you'll learn</div>
+        <div class="learn-grid">
+          <div class="learn-item">Generative vs evaluative research</div>
+          <div class="learn-item">How to write interview questions that aren't leading</div>
+          <div class="learn-item">How to run a 30-minute user interview</div>
+          <div class="learn-item">Affinity diagrams — grouping insights</div>
+          <div class="learn-item">Empathy maps — what users think, feel, do, say</div>
+          <div class="learn-item">How to synthesise research into insights</div>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=Oa2rA_GSn8w" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">User Research Methods Overview</div>
+              <div class="video-channel">NNGroup</div>
+            </div>
+            <div class="video-duration">17 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=MT4Ig2uqjTc" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">How to Write User Interview Questions</div>
+              <div class="video-channel">AJ&Smart</div>
+            </div>
+            <div class="video-duration">12 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.nngroup.com/articles/ux-research-cheat-sheet/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">UX Research Cheat Sheet — NNGroup</div>
+              <div class="reading-desc">When to use which research method. Print it and keep it nearby.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>What's the difference between generative and evaluative research?</li>
+            <li>Write 5 non-leading interview questions for a budgeting app. Avoid "Do you think X is good?"</li>
+            <li>What is an affinity diagram and how do you build one after interviews?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 14 -->
+    <div class="session" id="s14">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(224,107,255,0.15);color:var(--accent3)">14</div>
+        <div class="session-top-text">
+          <div class="session-title">Personas, User Journeys & Problem Statements</div>
+          <div class="session-desc">Turn research into design direction: personas, journey maps, "How Might We"</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>A <strong>persona</strong> is a fictional but research-based character that represents a group of real users. It keeps your team focused: "Would Sarah (our persona) understand this?" is a better question than "Does this look good?"</p>
+          <p>A <strong>journey map</strong> traces what a user does, thinks, and feels from the moment they discover your product to achieving their goal. Pain points show up as valleys on the map — and those valleys become your design opportunities.</p>
+          <p>A <strong>"How Might We"</strong> (HMW) statement frames a problem as a design challenge. "How might we help Sarah track her spending without feeling anxious?" is better than "Make budgeting less scary" — it opens space for creative solutions.</p>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=u44pBnAn7UM" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">How to Create a User Persona</div>
+              <div class="video-channel">CareerFoundry</div>
+            </div>
+            <div class="video-duration">14 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=mSxpVRo3BLg" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Customer Journey Maps Explained</div>
+              <div class="video-channel">NNGroup</div>
+            </div>
+            <div class="video-duration">12 min</div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Create a 1-page persona for a user of your food delivery prototype. Give them a name, age, job, and one core frustration.</li>
+            <li>Write one "How Might We" statement based on that persona's main pain point.</li>
+            <li>Map 5 touchpoints in their journey: Hungry → searches app → browses → orders → receives food.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 15 -->
+    <div class="session" id="s15">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(224,107,255,0.15);color:var(--accent3)">15</div>
+        <div class="session-top-text">
+          <div class="session-title">Information Architecture & User Flows</div>
+          <div class="session-desc">Site maps, user flows, task flows — how to structure complex apps</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p><strong>Information architecture (IA)</strong> is the skeleton of your product — how content is organised, labelled, and connected. Good IA is invisible. Bad IA makes users feel lost.</p>
+          <p>A <strong>site map</strong> shows the hierarchy of all screens (like a family tree for your app). A <strong>user flow</strong> shows the path a user takes to complete a specific task — including decision points and alternate paths.</p>
+          <p>Before you wireframe a single screen, draw the flow. If the flow makes sense, the screens will make sense. If the flow is confusing, no amount of beautiful screens will save it.</p>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=Iqh1dmi62EE" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Information Architecture Explained</div>
+              <div class="video-channel">Designlab</div>
+            </div>
+            <div class="video-duration">16 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=TIV1y11xz7k" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">User Flows in UX Design</div>
+              <div class="video-channel">AJ&Smart</div>
+            </div>
+            <div class="video-duration">11 min</div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Draw a site map for a simple e-commerce app — 5 main sections.</li>
+            <li>Map the user flow for "checkout with a saved card" from cart to confirmation.</li>
+            <li>Where are the decision points? Where could a user drop off?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 16 -->
+    <div class="session" id="s16">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(224,107,255,0.15);color:var(--accent3)">16</div>
+        <div class="session-top-text">
+          <div class="session-title">Wireframing — the Fast Way to Test Ideas</div>
+          <div class="session-desc">Lo-fi wireframes, sketching, rapid iteration, and getting feedback early</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>A <strong>wireframe</strong> is a rough, black-and-white layout of a screen. No color, no fancy typography, no images. Just boxes and labels that show where things will go.</p>
+          <p>Wireframes serve one purpose: <em>testing ideas cheaply before you invest time in high-fidelity design.</em> It takes 10 minutes to sketch a wireframe and 3 hours to design the same screen in full color. Catch problems at the wireframe stage.</p>
+          <p>Start on paper. Paper wireframes take 5 minutes and nobody gets attached to them. When the paper version makes sense, move to Figma for mid-fidelity wireframes (grayscale, proper spacing, but still no color or imagery).</p>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=KdfO_e0vPVg" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">How to Create Wireframes (lo-fi to hi-fi)</div>
+              <div class="video-channel">CareerFoundry</div>
+            </div>
+            <div class="video-duration">18 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.nngroup.com/articles/wireflows/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Wireflows — NNGroup</div>
+              <div class="reading-desc">How to combine wireframes and user flows into a single diagram used in real design teams.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Does every screen serve the user's goal at that exact moment in the flow?</li>
+            <li>Are there unnecessary steps you could remove?</li>
+            <li>Where do you need more research before making design decisions?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 17 -->
+    <div class="session" id="s17">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(224,107,255,0.15);color:var(--accent3)">17</div>
+        <div class="session-top-text">
+          <div class="session-title">Usability Testing</div>
+          <div class="session-desc">Moderated testing, task scripts, think-aloud protocol, and synthesising findings</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p><strong>Usability testing</strong> is watching real people try to use your design. You don't ask "do you like it?" — you give them a task and observe what happens. Where they hesitate, click wrong, or give up tells you everything.</p>
+          <p>The <strong>think-aloud protocol</strong> asks participants to narrate their thoughts while using the product: "I'm looking for the checkout button… I'm not sure what this icon does…" This surfaces hidden confusion that you'd never see by looking at analytics.</p>
+          <p>You only need 5 participants to find 85% of usability problems. Don't wait for a perfect prototype or a big budget. Test early, test often, test with a friend if you have to.</p>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=0YL0xoSmyZI" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Usability Testing 101</div>
+              <div class="video-channel">NNGroup</div>
+            </div>
+            <div class="video-duration">12 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=VhZDBCbBFEo" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">How to Run a Usability Test</div>
+              <div class="video-channel">Google Ventures</div>
+            </div>
+            <div class="video-duration">24 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Why You Only Need 5 Users — NNGroup</div>
+              <div class="reading-desc">The most famous UX research paper. Short, essential read. 5 users find 85% of problems.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Write one task for testing your project: "Please show me how you would add a new habit."</li>
+            <li>What is the think-aloud protocol and why does it surface hidden problems?</li>
+            <li>After testing, how do you decide which issues to fix first? (Frequency × severity)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 18 — PROJECT -->
+    <div class="session" id="s18">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(247,201,72,0.15);color:var(--accent2)">P3</div>
+        <div class="session-top-text">
+          <div class="session-title">🎯 Project 3 — Full UX Case Study: Habit Tracker App</div>
+          <div class="session-desc">Research → persona → flows → wireframes → hi-fi → usability test</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">🎯 Project brief</div>
+        <div class="project-box">
+          <div class="project-title">Habit Tracker App — Full UX Process</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Write 5 user interview questions for a habit-tracking app. Interview 1 real person (friend, family member).</li>
+            <li><span class="step-num">2</span>Create a 1-page persona based on your research. Give them a name, photo placeholder, goal, and frustration.</li>
+            <li><span class="step-num">3</span>Write a "How Might We" problem statement based on their biggest pain point.</li>
+            <li><span class="step-num">4</span>Draw a user flow for: <strong>Add habit → Track today → View streak</strong>. Paper or Figma.</li>
+            <li><span class="step-num">5</span>Sketch lo-fi wireframes for 4 screens on paper. Take photos.</li>
+            <li><span class="step-num">6</span>Build mid-fidelity wireframes in Figma (grayscale only — no color or images yet).</li>
+            <li><span class="step-num">7</span>Share the wireframes with 1 person. Ask them to complete the "add habit" task. Note where they hesitate.</li>
+            <li><span class="step-num">8</span>Fix the top 2 issues you found.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Persona + wireframe Figma file + 1 usability finding</div>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>Self-critique your project:</h4>
+          <ul class="review-questions">
+            <li>Does every screen serve the user's goal at that exact moment?</li>
+            <li>Is the flow logical? Could you remove any steps?</li>
+            <li>What surprised you about watching someone else use your design?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 HEADER -->
+    <div class="phase-header" id="phase4-header" style="margin-top:48px">
+      <div>
+        <div class="phase-badge" style="background:rgba(255,127,92,0.1);color:var(--accent4);border-color:rgba(255,127,92,0.3)">
+          <div class="phase-badge-dot" style="background:rgba(255,127,92,0.2);color:var(--accent4)">4</div>
+          Phase 4 · Sessions 19–23 · 30 hrs
+        </div>
+      </div>
+    </div>
+    <h2 class="phase-title">Portfolio & Professional Skills</h2>
+    <p class="phase-sub">Build 2 portfolio-quality case studies, launch your portfolio site, and learn to work like a professional designer. This phase gets you job-ready.</p>
+
+    <!-- SESSION 19 -->
+    <div class="session" id="s19">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(255,127,92,0.15);color:var(--accent4)">19</div>
+        <div class="session-top-text">
+          <div class="session-title">Writing Your First Case Study</div>
+          <div class="session-desc">What to include, how to structure it, and what hiring managers want to see</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>A <strong>case study</strong> is the story of a design project — not a gallery of pretty screenshots. Hiring managers want to see <em>how you think</em>, not just what you made.</p>
+          <p>Every case study must answer 4 questions: <strong>What was the problem?</strong> (context + user research) <strong>What did you explore?</strong> (wireframes, options considered) <strong>What did you decide and why?</strong> (the design + your reasoning) <strong>What happened?</strong> (results, learnings, what you'd do differently).</p>
+          <p>Write for a reader who has 90 seconds. Lead with the problem and the result. Put the process in the middle. Keep it honest — admitting what didn't work shows more maturity than pretending everything went perfectly.</p>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=5TT8R0jvqvE" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">How to Write a UX Case Study</div>
+              <div class="video-channel">CareerFoundry</div>
+            </div>
+            <div class="video-duration">22 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.bestfolios.com/casestudy" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Top UX Case Studies — Bestfolios</div>
+              <div class="reading-desc">Read 5 highly-rated case studies. Notice: problem → process → solution → results. Copy that structure.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">🎯 Mini project inside this session</div>
+        <div class="project-box">
+          <div class="project-title">Case Study: Redesign a screen that frustrates you</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Pick one screen from an app you use (banking, transit, university website) that frustrates you.</li>
+            <li><span class="step-num">2</span>Document what's broken and why (screenshots + annotations).</li>
+            <li><span class="step-num">3</span>Interview 2 real people. Ask if they share your frustration.</li>
+            <li><span class="step-num">4</span>Design the improved hi-fi screen in Figma.</li>
+            <li><span class="step-num">5</span>Write a 400-word case study: problem → research → solution → what you'd do differently.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Figma file + written case study (Notion or PDF)</div>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Does your case study show your process — not just the final design?</li>
+            <li>Is it clear you did user research and not just made it prettier?</li>
+            <li>Could a hiring manager understand it in 90 seconds?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 20 -->
+    <div class="session" id="s20">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(255,127,92,0.15);color:var(--accent4)">20</div>
+        <div class="session-top-text">
+          <div class="session-title">Major Project — Design a Complete Mental Wellness App</div>
+          <div class="session-desc">Your showstopper portfolio piece — 10 screens, full process</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Before you start</div>
+        <div class="quick-read">
+          <p>This is your hero project — the one you show first in your portfolio. Spend real time on it. Go through the full process: research, persona, flow, wireframes, iterations, hi-fi screens, prototype, test, refine.</p>
+        </div>
+        <div class="section-label">🎬 Watch this first</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=pk-MEjUObQY" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Full Mobile App Design Process</div>
+              <div class="video-channel">Malewicz (HYPE4)</div>
+            </div>
+            <div class="video-duration">1 hr</div>
+          </a>
+        </div>
+        <div class="section-label">🎯 Project brief</div>
+        <div class="project-box">
+          <div class="project-title">Mental Wellness App — 10 screens + case study</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Define your target user. Create a persona. Write a "How Might We" statement.</li>
+            <li><span class="step-num">2</span>Map the full user flow: Onboarding → Home → Mood Check-in → Journal → Resources.</li>
+            <li><span class="step-num">3</span>Sketch lo-fi wireframes on paper for all 10 screens.</li>
+            <li><span class="step-num">4</span>Build mid-fidelity wireframes in Figma. Get feedback from 1 person.</li>
+            <li><span class="step-num">5</span>Design polished hi-fi screens: <strong>Onboarding ×3, Home, Mood Check-in, Journal entry, Journal list, Resources, Profile, Settings.</strong></li>
+            <li><span class="step-num">6</span>Build a clickable prototype connecting all 10 screens.</li>
+            <li><span class="step-num">7</span>Write a 600-word case study: context → research → wireframes → design decisions → prototype → what you'd improve.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Figma file + prototype link + written case study</div>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>Self-critique your project:</h4>
+          <ul class="review-questions">
+            <li>Does each screen have a single, clear purpose — no screen is trying to do two things?</li>
+            <li>Can a new user complete onboarding in under 60 seconds?</li>
+            <li>Is the visual design cohesive — same palette, same type scale, same spacing throughout?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 21 -->
+    <div class="session" id="s21">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(255,127,92,0.15);color:var(--accent4)">21</div>
+        <div class="session-top-text">
+          <div class="session-title">Building Your Portfolio Website</div>
+          <div class="session-desc">Framer, Webflow, or Notion — launching a live portfolio with a real URL</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>Your portfolio is your most important design project. Use <strong>Framer</strong> (free, no-code, looks stunning) or <strong>Notion + Super.so</strong> (simpler, good for writing-heavy portfolios). Avoid Wix and Squarespace — they signal "I don't know design tools."</p>
+          <p>Structure: Home → 2 case studies → About → Contact. That's it. Don't overthink it. The work should speak; the site is just the container.</p>
+          <p>Your homepage needs: your name, one sentence about what you do, and your best project first. If a recruiter can't find your work in 3 seconds, they'll leave.</p>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=mNWcZ0zL5Bc" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">How to Build a UX Portfolio Website</div>
+              <div class="video-channel">CareerFoundry</div>
+            </div>
+            <div class="video-duration">25 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=Zl0mtMnBzFk" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Framer for Beginners — Build a Portfolio</div>
+              <div class="video-channel">Framer Academy</div>
+            </div>
+            <div class="video-duration">30 min</div>
+          </a>
+        </div>
+        <div class="section-label">📚 Readable resources</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.bestfolios.com" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Bestfolios — Top Designer Portfolios</div>
+              <div class="reading-desc">Study 10 portfolios from early-career designers. Note what the best ones have in common.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">🎯 Project brief</div>
+        <div class="project-box">
+          <div class="project-title">Launch Your Live Portfolio Site</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Build a homepage: name, 1-sentence bio, and your 2 best projects linked prominently.</li>
+            <li><span class="step-num">2</span>Add your first case study page (the redesign project).</li>
+            <li><span class="step-num">3</span>Add your second case study page (the mental wellness app).</li>
+            <li><span class="step-num">4</span>Add an About page: your background, why you're interested in design, what you're learning.</li>
+            <li><span class="step-num">5</span>Add a Contact section — even just an email link.</li>
+            <li><span class="step-num">6</span>Publish with a real URL and share with 3 people for feedback.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Live portfolio URL</div>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>Self-critique your portfolio:</h4>
+          <ul class="review-questions">
+            <li>Can a recruiter understand who you are in under 10 seconds?</li>
+            <li>Is your best project the FIRST thing they see?</li>
+            <li>Does every case study answer: problem, process, and outcome?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 22 -->
+    <div class="session" id="s22">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(255,127,92,0.15);color:var(--accent4)">22</div>
+        <div class="session-top-text">
+          <div class="session-title">Figma Advanced + Dev Handoff</div>
+          <div class="session-desc">Variables, dark mode, Dev Mode, and working with developers</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">📖 Mini Read</div>
+        <div class="quick-read">
+          <p>When your design moves to development, engineers need specific information: exact sizes, colors (in hex/rgb), spacing values, component states, and interaction specs. <strong>Dev Mode in Figma</strong> (free) gives them all of this automatically when your file is well-organised.</p>
+          <p><strong>Variables</strong> (Figma's version of design tokens) let you create a dark mode version of your entire design by changing one setting. This is how professional design teams build scalable systems.</p>
+        </div>
+        <div class="section-label">🎬 Video lessons</div>
+        <div class="video-grid">
+          <a class="video-card" href="https://www.youtube.com/watch?v=2Mq43B1v_NU" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Figma Variables — Official Tutorial</div>
+              <div class="video-channel">Figma</div>
+            </div>
+            <div class="video-duration">22 min</div>
+          </a>
+          <a class="video-card" href="https://www.youtube.com/watch?v=BnFzOkX3YKg" target="_blank">
+            <div class="video-thumb"></div>
+            <div class="video-info">
+              <div class="video-title">Figma Dev Handoff — Full Guide</div>
+              <div class="video-channel">DesignWithArash</div>
+            </div>
+            <div class="video-duration">15 min</div>
+          </a>
+        </div>
+        <div class="section-label">⏱ 15-Minute Review</div>
+        <div class="review-box">
+          <h4>After this session, ask yourself:</h4>
+          <ul class="review-questions">
+            <li>Add color variables to your wellness app. Apply a dark mode theme and see it update live.</li>
+            <li>What information does a developer need from your Figma file? (specs, assets, states, interactions)</li>
+            <li>If an engineer asked "what font size is the body text?", where would they find it in your file?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SESSION 23 — FINAL -->
+    <div class="session" id="s23">
+      <div class="session-top" onclick="toggleSession(this)">
+        <div class="session-num-badge" style="background:rgba(247,201,72,0.15);color:var(--accent2)">🏁</div>
+        <div class="session-top-text">
+          <div class="session-title">🎯 Final Review — Portfolio Audit & What Comes Next</div>
+          <div class="session-desc">Critique your full body of work, set your 30-day plan, and reflect on 120 hours</div>
+        </div>
+        <div class="session-meta">
+          <span class="pill hours-pill">5 hrs</span>
+          <div class="toggle-arrow">▼</div>
+        </div>
+      </div>
+      <div class="session-body">
+        <div class="section-label">🎯 Final checklist</div>
+        <div class="project-box">
+          <div class="project-title">Complete your 120-hour journey</div>
+          <ul class="project-steps">
+            <li><span class="step-num">1</span>Review all projects. Pick your 2 strongest for the portfolio homepage. Put them first.</li>
+            <li><span class="step-num">2</span>Update every case study to include: <em>what you'd do differently with more time.</em></li>
+            <li><span class="step-num">3</span>Share your portfolio link with 3 people. Ask: "What's confusing? What would make you want to hire me?"</li>
+            <li><span class="step-num">4</span>Post one project on Dribbble or Behance.</li>
+            <li><span class="step-num">5</span>Set a 30-day goal: complete 1 more case study, or apply for a junior role or internship.</li>
+          </ul>
+          <div class="deliverable-tag">Deliverable: Live portfolio + 2 polished case studies</div>
+        </div>
+        <div class="section-label">📚 Where to go next</div>
+        <div class="reading-list">
+          <a class="reading-item" href="https://www.interaction-design.org/courses" target="_blank">
+            <div class="reading-icon">🎓</div>
+            <div class="reading-info">
+              <div class="reading-title">Interaction Design Foundation — Free Courses</div>
+              <div class="reading-desc">The best structured UX courses online. Start with "Design Thinking" or "UX Design".</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://www.coursera.org/professional-certificates/google-ux-design" target="_blank">
+            <div class="reading-icon">🎓</div>
+            <div class="reading-info">
+              <div class="reading-title">Google UX Design Certificate — Coursera</div>
+              <div class="reading-desc">A well-respected certificate that goes deeper on everything in this roadmap. Good for your resume.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://www.youtube.com/@Malewicz" target="_blank">
+            <div class="reading-icon">▶️</div>
+            <div class="reading-info">
+              <div class="reading-title">Malewicz on YouTube — Subscribe now</div>
+              <div class="reading-desc">The best channel for intermediate-to-advanced UI design tips. Watch 1 video per week forever.</div>
+            </div>
+          </a>
+          <a class="reading-item" href="https://www.nngroup.com/articles/" target="_blank">
+            <div class="reading-icon">📄</div>
+            <div class="reading-info">
+              <div class="reading-title">Nielsen Norman Group Articles — 1 per week</div>
+              <div class="reading-desc">After 120 hours, this is how you keep growing. Set a weekly reminder and read one article.</div>
+            </div>
+          </a>
+        </div>
+        <div class="section-label">⏱ Final Review</div>
+        <div class="review-box">
+          <h4>Reflect on your 120-hour journey:</h4>
+          <ul class="review-questions">
+            <li>What are the 3 most important things you learned about design?</li>
+            <li>Which project are you most proud of? What would you change?</li>
+            <li>List 5 concepts you're still unsure about — plan sessions for each in the next 30 days.</li>
+            <li>You've put in 120 hours. You are no longer a beginner. What's next?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:80px"></div>
+  </main>
+</div>
+
+<script>
+  function toggleSession(header) {
+    const session = header.parentElement;
+    session.classList.toggle('open');
+    // update sidebar active
+    updateSidebarActive(session.id);
+  }
+
+  function goTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    // close all, open target
+    document.querySelectorAll('.session').forEach(s => s.classList.remove('open'));
+    el.classList.add('open');
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateSidebarActive(id);
+  }
+
+  function updateSidebarActive(id) {
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(id)) {
+        btn.classList.add('active');
+      }
+    });
+  }
+
+  function toggleFocus() {
+    document.body.classList.toggle('focus-mode');
+    const btn = document.getElementById('focusBtn');
+    btn.classList.toggle('on');
+    btn.innerHTML = document.body.classList.contains('focus-mode')
+      ? '<span class="focus-dot"></span> Focus: ON'
+      : '<span class="focus-dot"></span> Focus Mode';
+  }
+
+  // Build progress segments
+  const total = 23;
+  const strip = document.getElementById('progressStrip');
+  for (let i = 0; i < total; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'prog-seg';
+    strip.appendChild(seg);
+  }
+
+  // Open first session by default
+  document.querySelector('.session').classList.add('open');
+</script>
+</body>
+</html>
